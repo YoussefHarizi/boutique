@@ -44,17 +44,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <li class="nav-item ">
+                    <a class="nav-link" href="{{path('app_products')}}">Nos Produits</a>
                 </li>
                
             </ul>
             
             {% if app.user %}
-                <a href={{path('app_account')}}>Mon Compte</a>
+                <a href={{path('app_account')}}>Mon Compte</a> | 
                 <a href={{path('app_logout')}}>Déconnexion</a>
             {% else %}
-                <a href={{path('app_login')}}>Connexion</a>
+                <a href={{path('app_login')}}>Connexion</a> | 
                 <a href={{path('app_register')}}>Register</a>
                 
             {% endif %}
