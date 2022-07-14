@@ -4,21 +4,22 @@
 {% endblock %}
 
 {% block content %}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 
 	<div class="px-4 px-lg-0">
   <!-- For demo purpose -->
   <div class="container py-2 text-center">
     <h1 class="display-4">Mon Panier</h1>
-  
+     <p class="text-center"><i class="text-info font-weight-bold">{{fullCarts|length}}</i> produit(s) dans votre panier</p>
   </div>
   <!-- End -->
 
   <div class="pb-5">
     <div class="container">
+    {% if fullCarts|length >0 %}
+      
       <div class="row">
-        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+        <div class="col-lg-12  bg-white rounded shadow-sm mb-5">
 
           <!-- Shopping cart table -->
           <div class="table-responsive">
@@ -43,6 +44,7 @@
                 </tr>
               </thead>
               <tbody>
+              {% set total=0 %}
               {% for cart in fullCarts %}
                 
                 <tr>
@@ -55,9 +57,14 @@
                     </div>
                   </th>
                   <td class="border-0 align-middle"><strong>{{(cart.product.price / 100)|number_format(2, ',', '.')}}$</strong></td>
-                  <td class="border-0 align-middle"><strong>{{cart.quantity}}</strong></td>
+                  <td class="border-0 align-middle">
+                  <a class="text-primary" href="{{path('app_decrease_from_cart',{'id':cart.product.id})}}"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                  <strong>{{cart.quantity}}</strong>
+                  <a class="text-success" href="{{path('app_add_to_cart',{'id':cart.product.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                  </td>
                   <td class="border-0 align-middle"><strong>{{(cart.product.price * cart.quantity / 100)|number_format(2, ',', '.')}}$</strong></td>
-                  <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a></td>
+                  <td class="border-0 align-middle"><a href="{{path('app_delete_from_cart',{'id':cart.product.id})}}" class="text-dark"><i class="fa fa-trash"></i></a></td>
+                  {% set total=total+cart.product.price * cart.quantity %}
                 </tr>
               {% endfor %}
                
@@ -91,7 +98,7 @@
           <div class="p-4">
             <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
             <ul class="list-unstyled mb-4">
-              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>$390.00</strong></li>
+              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>{{(total/ 100)|number_format(2, ',', '.')}}$</strong></li>
               <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li>
               <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>$0.00</strong></li>
               <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
@@ -101,6 +108,9 @@
           </div>
         </div>
       </div>
+    {% else %}
+      <p>Votre panier est vide</p>
+    {% endif %}
 
     </div>
   </div>

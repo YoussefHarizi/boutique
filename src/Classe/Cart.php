@@ -3,6 +3,7 @@ namespace App\Classe;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Validator\Constraints\Length;
 
 class Cart{
     private $session;
@@ -21,6 +22,18 @@ class Cart{
         }
         $this->requestStack->getSession()->set('cart',$cart);
     }
+
+    public function decrease($id)
+    {
+        $cart=$this->requestStack->getSession()->get('cart',[]);
+        if($cart[$id]>1){
+            $cart[$id]--;
+        }else{
+            unset($cart[$id]);
+        }
+        $this->requestStack->getSession()->set('cart',$cart);
+    }
+
     public function get()
     {
         return $this->requestStack->getSession()->get('cart');
@@ -28,5 +41,11 @@ class Cart{
     public function remove()
     {
         return $this->requestStack->getSession()->remove('cart');
+    }
+    public function delete($id)
+    {
+        $cart=$this->requestStack->getSession()->get('cart',[]);
+        unset($cart[$id]);
+        $this->requestStack->getSession()->set('cart',$cart);
     }
 }

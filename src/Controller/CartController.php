@@ -22,15 +22,18 @@ class CartController extends AbstractController
     #[Route('/mon-panier', name: 'app_panier')]
     public function index(Cart $cart): Response
     {
-        // dd($cart->get());
+       
         $fullCarts=[];
-        foreach ($cart->get() as $id => $quantity) {
-            $fullCarts[]=[
-                'product'=>$this->entityManager->getRepository(Product::class)->findOneById($id),
-                'quantity'=>$quantity
+        if($cart->get()){
 
-            ];
-            
+            foreach ($cart->get() as $id => $quantity) {
+                $fullCarts[]=[
+                    'product'=>$this->entityManager->getRepository(Product::class)->findOneById($id),
+                    'quantity'=>$quantity
+    
+                ];
+                
+            }
         }
         // dd($fullCarts);
         return $this->render('cart/index.html.twig', [
@@ -45,10 +48,23 @@ class CartController extends AbstractController
        return $this->redirectToRoute('app_panier');
     }
 
+    #[Route('/cart/decrease/{id}', name: 'app_decrease_from_cart')]
+    public function decrease(Cart $cart, $id): Response
+    {
+       $cart->decrease($id);
+       return $this->redirectToRoute('app_panier');
+    }
+
     #[Route('/cart/remove', name: 'app_remove_cart')]
     public function remove(Cart $cart): Response
     {
        $cart->remove();
        return $this->redirectToRoute('app_products');
+    }
+    #[Route('/cart/delete/{id}', name: 'app_delete_from_cart')]
+    public function delete(Cart $cart,$id): Response
+    {
+       $cart->delete($id);
+       return $this->redirectToRoute('app_panier');
     }
 }
