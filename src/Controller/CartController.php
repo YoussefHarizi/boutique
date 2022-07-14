@@ -11,33 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    private $entityManager;
-
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager=$entityManager;
-    }
-
+   
     #[Route('/mon-panier', name: 'app_panier')]
     public function index(Cart $cart): Response
     {
-       
-        $fullCarts=[];
-        if($cart->get()){
-
-            foreach ($cart->get() as $id => $quantity) {
-                $fullCarts[]=[
-                    'product'=>$this->entityManager->getRepository(Product::class)->findOneById($id),
-                    'quantity'=>$quantity
-    
-                ];
-                
-            }
-        }
-        // dd($fullCarts);
         return $this->render('cart/index.html.twig', [
-            'fullCarts' => $fullCarts,
+            'fullCarts' => $cart->getfull(),
         ]);
     }
 
