@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle adresse
+{% endblock %}
+
+{% block content %}
+	<h1 class="mb-5">Ajouter une nouvelle adresse</h1>
+    {# {{ form_start(form) }}
+   
+  <div class="form-row">
+    <div class="form-group col-md-6">
+    
+      {{form(form.name)}}
+    </div>
+    <div class="form-group col-md-4">
+     {{form(form.company)}}
+    </div>
+    <div class="form-group col-md-2">
+      {{form(form.phone)}}
+    </div>
+  </div>
+ 
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      {{form(form.firstname)}}
+    </div>
+    <div class="form-group col-md-6">
+      {{form(form.lastname)}}
+    </div>
+  </div>
+ 
+  <div class="form-group">
+    {{form(form.adress)}}
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      {{form(form.city)}}
+    </div>
+    <div class="form-group col-md-4">
+     {{form(form.country)}}
+    </div>
+    <div class="form-group col-md-2">
+      {{form(form.postal)}}
+    </div>
+  </div>
+ 
+ {{ form_end(form) }} #}
+
+	{{form(form)}}
+
+{% endblock %}
