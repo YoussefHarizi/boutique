@@ -6,7 +6,6 @@ use App\Classe\Cart;
 use App\Entity\Order;
 use App\Entity\OrderDetail;
 use App\Form\OrderType;
-use Stripe\Stripe;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,9 +77,7 @@ class OrderController extends AbstractController
 
             $this->entityManager->persist($order);
 
-            $YOUR_DOMAIN = 'https://127.0.0.1:8000';
-            $product_for_stripe=[];
-
+           
             // save orderDetails
             foreach ($cart->getFull() as $product) {
                 $orderDetails = new OrderDetail();
@@ -91,32 +88,11 @@ class OrderController extends AbstractController
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
                 $this->entityManager->persist($orderDetails);
 
-                $product_for_stripe[]=[
-                    'price_data'=>[
-                        'currency'=>'CAD',
-                        'unit_amount'=>$product['product']->getPrice(),
-                        'product_data'=>[
-                            'name'=>$product['product']->getName(),
-                            'images'=>[$YOUR_DOMAIN."/uploads/images/".$product['product']->getimage()]
-                        ],
-                    ],
-                        'quantity'=>$product['quantity']
-                ];
+               
             }
             // $this->entityManager->flush();
 
-            Stripe::setApiKey('sk_test_51LOPieAfFULoJQbjGAjAK2pcQc7AKKej7wOBRIT1ynSijxd0CPddX9KQXcrWCGYmqZCJa6L1ETMErrKA0tuivfok00lWn0bOON');
-
             
-
-            $checkout_session = \Stripe\Checkout\Session::create([
-                'line_items' => [[
-                  $product_for_stripe
-                ]],
-                'mode' => 'payment',
-                'success_url' => $YOUR_DOMAIN . '/success.html',
-                'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
-              ]);
 
           
 
@@ -124,7 +100,7 @@ class OrderController extends AbstractController
                 'fullCarts' => $cart->getFull(),
                 'carrier' => $carriers,
                 'delivery' => $delivery_content,
-                'stripe_checkout_session'=>$checkout_session->id
+                
             ]);
 
 
