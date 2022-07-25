@@ -7,8 +7,15 @@
 Bonjour {{app.user.firstname}}
 <hr>
 <div class="mb-3">
-<a  href="{{path('app_account_password')}}">changer le mot de passe</a> <br>
+<p>
+<a  href="{{path('app_account_password')}}">changer le mot de passe</a> 
+</p>
+<p>
 <a  href="{{path('app_account_adress')}}">Mes adresses</a>
+</p>
+<p>
+<a  href="{{path('app_account_order')}}">Mes Commandes</a>
+</p>
 </div>
 {% endblock %}
 
