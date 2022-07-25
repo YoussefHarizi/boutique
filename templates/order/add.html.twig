@@ -248,7 +248,7 @@
 
 									<div class="row mb-5 mt-4 ">
 										<div class="col-md-7 col-lg-6 mx-auto">
-										      <form action="{{path('app_stripe_ceckout_session')}}" method="POST">
+										      <form action="{{path('app_stripe_ceckout_session',{'reference':reference})}}" method="POST">
 											<button type="submit" id="checkout-button" class="btn btn-block btn-outline-primary btn-lg">Payer |
 												{{ ((total / 100) + (carrier.price / 100))|number_format(2, ',', '.') }}
 												$</button>
