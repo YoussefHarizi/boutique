@@ -34,7 +34,7 @@ class StripeController extends AbstractController
         $order = $entityManager->getRepository(Order::class)->findOneByReference($reference);
 
         if (!$order) {
-            new JsonResponse(['error' => 'order']);
+           return $this->redirectToRoute('app_order');
         }
 // dd($order->getOrderDetails()->getValues());
         foreach ($order->getOrderDetails()->getValues() as $product) {
@@ -74,10 +74,12 @@ class StripeController extends AbstractController
                 $products_for_stripe
             ]],
             'mode' => 'payment',
-            'success_url' => $YOUR_DOMAIN . '/success.html',
-            'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+            'success_url' => $YOUR_DOMAIN . '/commande/merci/{CHECKOUT_SESSION_ID}',
+            'cancel_url' => $YOUR_DOMAIN . '/commande/erreur/{CHECKOUT_SESSION_ID}',
         ]);
 
+        $order->setStripeSessionId($checkout_session->id);
+        $entityManager->flush();
 
         return $this->redirect($checkout_session->url,303);
     }
